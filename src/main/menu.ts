@@ -16,4 +16,8 @@ const template: (MenuItemConstructorOptions | MenuItem)[] = [{
 
 const menu = Menu.buildFromTemplate(template)
 
+function createMenu() {
+   // to do
+}
+
 export default menu
