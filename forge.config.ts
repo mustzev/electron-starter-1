@@ -8,30 +8,27 @@ import type { ForgeConfig } from '@electron-forge/shared-types'
 const config: ForgeConfig = {
   packagerConfig: {},
   rebuildConfig: {},
-  makers: [new MakerSquirrel({}), new MakerZIP({}, ['darwin']), new MakerRpm({}), new MakerDeb({})],
+  makers: [
+    new MakerSquirrel({}),
+    new MakerZIP({}, ['darwin']),
+    new MakerRpm({}),
+    new MakerDeb({})
+  ],
   plugins: [
     new VitePlugin({
-      // `build` can specify multiple entry builds, which can be Main process, Preload scripts, Worker process, etc.
-      // If you are familiar with Vite configuration, it will look really familiar.
-      build: [
-        {
-          // `entry` is just an alias for `build.lib.entry` in the corresponding file of `config`.
-          entry: 'src/main/main.ts',
-          config: 'vite.main.config.ts',
-        },
-        {
-          entry: 'src/preload/preload.ts',
-          config: 'vite.preload.config.ts',
-        },
-      ],
-      renderer: [
-        {
-          name: 'main_window',
-          config: 'vite.main_window.config.ts',
-        },
-      ],
-    }),
-  ],
+      build: [{
+        entry: 'src/main/main.ts',
+        config: 'vite.main.config.ts'
+      }, {
+        entry: 'src/preload/preload.ts',
+        config: 'vite.preload.config.ts'
+      }],
+      renderer: [{
+        name: 'main_window',
+        config: 'vite.main_window.config.ts'
+      }]
+    })
+  ]
 }
 
 export default config

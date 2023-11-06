@@ -1,23 +1,33 @@
-import { Menu, MenuItem, MenuItemConstructorOptions, ipcMain } from 'electron'
+import { Menu, MenuItem, MenuItemConstructorOptions, app } from 'electron'
 
-const template: (MenuItemConstructorOptions | MenuItem)[] = [{
-   label: 'Pages',
-   submenu: [{
-      label: 'Home',
-      click: () => ipcMain.emit('nav-to-home')
+export function createMenu() {
+   const template: (MenuItemConstructorOptions | MenuItem)[] = [{
+      label: app.name,
+      role: 'appMenu'
    }, {
-      label: 'Page 1',
-      click: () => ipcMain.emit('nav-to-page1')
+      label: 'Pages',
+      submenu: [{
+         label: 'Home',
+         click: (menuItem, browserWindow, event) => {
+            browserWindow.webContents.send('nav-to-home')
+         }
+      }, {
+         label: 'Page 1',
+         click: (menuItem, browserWindow, event) => {
+            browserWindow.webContents.send('nav-to-page1')
+         }
+      }, {
+         label: 'Page 2',
+         click: (menuItem, browserWindow, event) => {
+            browserWindow.webContents.send('nav-to-page2')
+         }
+      }]
    }, {
-      label: 'Page 2',
-      click: () => ipcMain.emit('nav-to-page2')
+      role: 'viewMenu'
+   }, {
+      role: 'windowMenu'
    }]
-}]
 
-const menu = Menu.buildFromTemplate(template)
-
-function createMenu() {
-   // to do
+   const menu = Menu.buildFromTemplate(template)
+   Menu.setApplicationMenu(menu)
 }
-
-export default menu

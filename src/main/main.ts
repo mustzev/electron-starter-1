@@ -1,6 +1,8 @@
-import { app, BrowserWindow, Menu } from 'electron'
+import { app, BrowserWindow } from 'electron'
 import { join } from 'path'
-import menu from './menu'
+import { showDialogs } from './dialog'
+import { createMenu } from './menu'
+
 
 if (require('electron-squirrel-startup')) {
   app.quit()
@@ -11,17 +13,18 @@ const createWindow = () => {
     width: 1600,
     height: 800,
     webPreferences: {
-      preload: join(__dirname, 'preload.js'),
-    },
+      preload: join(__dirname, 'preload.js')
+    }
   })
+
+  createMenu()
+  showDialogs(mainWindow)
 
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL)
   } else {
     mainWindow.loadFile(join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`))
   }
-
-  Menu.setApplicationMenu(menu)
 
   mainWindow.webContents.openDevTools()
 }

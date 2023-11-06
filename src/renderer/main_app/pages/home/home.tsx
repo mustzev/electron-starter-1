@@ -1,13 +1,15 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 export default function Home() {
    const [versions] = useState(window.electron.process.versions)
 
-   useEffect(() => {
-      window.electron.ipcRenderer.on('nav-to-home', (e) => {
-         console.log(e)
-      })
-   }, [])
+   function showMessageDialog() {
+      window.electron.ipcRenderer.send('show-message-dialog', 'Message box showed')
+   }
+
+   function showErrorDialog() {
+      window.electron.ipcRenderer.send('show-error-dialog', 'Error title', 'Error box showed')
+   }
 
    return (
       <div className="">
@@ -17,6 +19,14 @@ export default function Home() {
             Node: {versions.node}<br />
             Chrome: {versions.chrome}<br />
             Electron: {versions.electron}
+         </div>
+         <div className="">
+            <button onClick={showMessageDialog}>
+               Show message
+            </button>
+            <button onClick={showErrorDialog}>
+               Show error
+            </button>
          </div>
       </div>
    )
